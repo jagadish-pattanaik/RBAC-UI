@@ -12,6 +12,7 @@ import {
   Card,
   CardContent,
   useTheme,
+  Skeleton,
 } from '@mui/material';
 import {
   People as PeopleIcon,
@@ -21,6 +22,8 @@ import {
 } from '@mui/icons-material';
 import { useRBAC } from '../../context/RBACContext';
 import { api } from '../../services/api';
+import { getPermissionIcon } from '../../utils/iconMapping';
+import Shimmer from '../Common/Shimmer';
 
 const StatCard = ({ title, value, icon, color }) => {
   const theme = useTheme();
@@ -116,6 +119,7 @@ const UserCountChip = ({ count }) => {
 
 const PermissionChip = ({ permission }) => {
   const theme = useTheme();
+  const IconComponent = getPermissionIcon(permission);
   
   return (
     <Box
@@ -135,7 +139,7 @@ const PermissionChip = ({ permission }) => {
         margin: '0 4px 4px 0',
       }}
     >
-      <PermissionsIcon sx={{ fontSize: 14 }} />
+      <IconComponent sx={{ fontSize: 14 }} />
       {permission}
     </Box>
   );
@@ -169,8 +173,41 @@ export default function Dashboard() {
 
   if (state.loadingStates.operations) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-        <CircularProgress />
+      <Box>
+        <Typography variant="h5" sx={{ mb: 3 }}>
+          Dashboard Overview
+        </Typography>
+        <Grid container spacing={3} sx={{ mb: 4 }}>
+          {[1, 2, 3, 4].map((item) => (
+            <Grid item xs={12} sm={6} md={3} key={item}>
+              <Card>
+                <CardContent>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Shimmer width={40} height={40} borderRadius="50%" />
+                    <Box sx={{ ml: 2, flex: 1 }}>
+                      <Shimmer width="60%" height={24} />
+                    </Box>
+                  </Box>
+                  <Shimmer width="40%" height={32} />
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+        <Grid container spacing={3}>
+          {[1, 2].map((item) => (
+            <Grid item xs={12} md={6} key={item}>
+              <Paper sx={{ p: 2, height: '400px' }}>
+                <Shimmer width="30%" height={24} sx={{ mb: 2 }} />
+                {[1, 2, 3, 4, 5].map((subItem) => (
+                  <Box key={subItem} sx={{ mb: 2 }}>
+                    <Shimmer width="100%" height={60} />
+                  </Box>
+                ))}
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
       </Box>
     );
   }

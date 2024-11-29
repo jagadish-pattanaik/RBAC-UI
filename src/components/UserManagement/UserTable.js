@@ -9,6 +9,7 @@ import {
   CircularProgress,
   Box,
   useTheme,
+  Skeleton,
 } from '@mui/material';
 import {
   Edit as EditIcon,
@@ -16,6 +17,8 @@ import {
   Person as PersonIcon,
 } from '@mui/icons-material';
 import ActionButton from '../Common/ActionButton';
+import { getRoleIcon } from '../../utils/iconMapping';
+import Shimmer from '../Common/Shimmer';
 
 const StatusChip = ({ status }) => {
   const theme = useTheme();
@@ -54,6 +57,7 @@ const StatusChip = ({ status }) => {
 
 const RoleChip = ({ role }) => {
   const theme = useTheme();
+  const IconComponent = getRoleIcon(role);
   
   return (
     <Box
@@ -72,7 +76,7 @@ const RoleChip = ({ role }) => {
         gap: 0.5,
       }}
     >
-      <PersonIcon sx={{ fontSize: 14 }} />
+      <IconComponent sx={{ fontSize: 14 }} />
       {role}
     </Box>
   );
@@ -81,9 +85,30 @@ const RoleChip = ({ role }) => {
 export default function UserTable({ users, onEdit, onDelete, loading }) {
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-        <CircularProgress />
-      </Box>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Role</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell align="right">Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {[1, 2, 3].map((item) => (
+              <TableRow key={item}>
+                <TableCell><Shimmer width={150} /></TableCell>
+                <TableCell><Shimmer width={200} /></TableCell>
+                <TableCell><Shimmer width={100} /></TableCell>
+                <TableCell><Shimmer width={80} /></TableCell>
+                <TableCell align="right"><Shimmer width={100} /></TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     );
   }
 

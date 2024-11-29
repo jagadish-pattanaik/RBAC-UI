@@ -12,16 +12,40 @@ import {
   useTheme,
   Typography,
 } from '@mui/material';
-import { Security as SecurityIcon } from '@mui/icons-material';
+import { getPermissionIcon } from '../../utils/iconMapping';
+import Shimmer from '../Common/Shimmer';
 
 export default function PermissionMatrix({ roles, permissions, onPermissionChange, loading }) {
   const theme = useTheme();
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-        <CircularProgress />
-      </Box>
+      <TableContainer>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell><Shimmer width={120} /></TableCell>
+              {[1, 2, 3, 4, 5].map((item) => (
+                <TableCell key={item} align="center">
+                  <Shimmer width={100} />
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {[1, 2, 3].map((row) => (
+              <TableRow key={row}>
+                <TableCell><Shimmer width={100} /></TableCell>
+                {[1, 2, 3, 4, 5].map((col) => (
+                  <TableCell key={col} align="center">
+                    <Shimmer width={24} height={24} borderRadius="4px" />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     );
   }
 
@@ -41,47 +65,50 @@ export default function PermissionMatrix({ roles, permissions, onPermissionChang
             >
               Role / Permission
             </TableCell>
-            {permissions.map((permission) => (
-              <TableCell 
-                key={permission.id} 
-                align="center"
-                sx={{ 
-                  fontWeight: 600,
-                  backgroundColor: theme.palette.mode === 'dark' 
-                    ? 'rgba(255, 255, 255, 0.05)' 
-                    : 'rgba(0, 0, 0, 0.02)',
-                  padding: '16px',
-                }}
-              >
-                <Tooltip 
-                  title={
-                    <Box sx={{ p: 1 }}>
-                      <Typography variant="subtitle2" sx={{ mb: 1 }}>
-                        {permission.name}
-                      </Typography>
-                      <Typography variant="body2">
-                        {permission.description}
-                      </Typography>
-                    </Box>
-                  }
-                  placement="top"
+            {permissions.map((permission) => {
+              const IconComponent = getPermissionIcon(permission.name);
+              return (
+                <TableCell 
+                  key={permission.id} 
+                  align="center"
+                  sx={{ 
+                    fontWeight: 600,
+                    backgroundColor: theme.palette.mode === 'dark' 
+                      ? 'rgba(255, 255, 255, 0.05)' 
+                      : 'rgba(0, 0, 0, 0.02)',
+                    padding: '16px',
+                  }}
                 >
-                  <Box
-                    sx={{
-                      textTransform: 'capitalize',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: 1,
-                      fontSize: '0.875rem',
-                    }}
+                  <Tooltip 
+                    title={
+                      <Box sx={{ p: 1 }}>
+                        <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                          {permission.name}
+                        </Typography>
+                        <Typography variant="body2">
+                          {permission.description}
+                        </Typography>
+                      </Box>
+                    }
+                    placement="top"
                   >
-                    <SecurityIcon sx={{ fontSize: 16 }} />
-                    {permission.name}
-                  </Box>
-                </Tooltip>
-              </TableCell>
-            ))}
+                    <Box
+                      sx={{
+                        textTransform: 'capitalize',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 1,
+                        fontSize: '0.875rem',
+                      }}
+                    >
+                      <IconComponent sx={{ fontSize: 16 }} />
+                      {permission.name}
+                    </Box>
+                  </Tooltip>
+                </TableCell>
+              );
+            })}
           </TableRow>
         </TableHead>
         <TableBody>
