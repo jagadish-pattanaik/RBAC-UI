@@ -4,14 +4,44 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   IconButton,
-  Chip,
   CircularProgress,
   Box,
+  Divider,
+  useTheme,
 } from '@mui/material';
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
+  Security as SecurityIcon,
 } from '@mui/icons-material';
+import ActionButton from '../Common/ActionButton';
+
+const PermissionChip = ({ permission }) => {
+  const theme = useTheme();
+  
+  return (
+    <Box
+      sx={{
+        px: 1.5,
+        py: 0.5,
+        borderRadius: 12,
+        fontSize: '0.75rem',
+        fontWeight: 500,
+        backgroundColor: theme.palette.mode === 'dark'
+          ? 'rgba(0, 0, 0, 0.2)'
+          : 'rgba(0, 0, 0, 0.08)',
+        color: theme.palette.text.secondary,
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 0.5,
+        margin: '0 4px 4px 0',
+      }}
+    >
+      <SecurityIcon sx={{ fontSize: 14 }} />
+      {permission}
+    </Box>
+  );
+};
 
 export default function RoleList({ roles, onEdit, onDelete, loading }) {
   if (loading) {
@@ -24,32 +54,47 @@ export default function RoleList({ roles, onEdit, onDelete, loading }) {
 
   return (
     <List>
-      {roles.map((role) => (
-        <ListItem key={role.id}>
-          <ListItemText
-            primary={role.name}
-            secondary={
-              <Box sx={{ mt: 1 }}>
-                {role.permissions.map((permission) => (
-                  <Chip
-                    key={permission}
-                    label={permission}
-                    size="small"
-                    sx={{ mr: 1, mb: 1 }}
-                  />
-                ))}
-              </Box>
-            }
-          />
-          <ListItemSecondaryAction>
-            <IconButton edge="end" onClick={() => onEdit(role)} sx={{ mr: 1 }}>
-              <EditIcon />
-            </IconButton>
-            <IconButton edge="end" onClick={() => onDelete(role.id)}>
-              <DeleteIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
+      {roles.map((role, index) => (
+        <Box key={role.id}>
+          <ListItem
+            sx={{
+              '&:hover': {
+                backgroundColor: (theme) => theme.palette.mode === 'dark'
+                  ? 'rgba(255,255,255,0.05)'
+                  : 'rgba(0,0,0,0.02)',
+              },
+              py: 2,
+            }}
+          >
+            <ListItemText
+              primary={role.name}
+              secondary={
+                <Box sx={{ mt: 1 }}>
+                  {role.permissions.map((permission) => (
+                    <PermissionChip key={permission} permission={permission} />
+                  ))}
+                </Box>
+              }
+              primaryTypographyProps={{ 
+                fontWeight: 500,
+                color: 'text.primary',
+              }}
+            />
+            <ListItemSecondaryAction>
+              <ActionButton
+                icon={<EditIcon />}
+                onClick={() => onEdit(role)}
+                tooltip="Edit role"
+              />
+              <ActionButton
+                icon={<DeleteIcon />}
+                onClick={() => onDelete(role.id)}
+                tooltip="Delete role"
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
+          {index < roles.length - 1 && <Divider />}
+        </Box>
       ))}
     </List>
   );
