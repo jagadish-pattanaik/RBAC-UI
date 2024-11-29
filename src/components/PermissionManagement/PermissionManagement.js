@@ -12,37 +12,45 @@ export default function PermissionManagement() {
   useEffect(() => {
     fetchPermissions();
     fetchRoles();
+    
+    // Cleanup function to clear error state
+    return () => {
+      dispatch({ type: 'CLEAR_ERROR' });
+    };
   }, []);
 
   const fetchPermissions = async () => {
     try {
-      dispatch({ type: 'SET_LOADING', payload: true });
+      dispatch({ type: 'SET_LOADING', payload: { key: 'permissions', value: true } });
       const permissions = await api.getPermissions();
       dispatch({ type: 'SET_PERMISSIONS', payload: permissions });
     } catch (error) {
       showSnackbar(error.message, 'error');
     } finally {
-      dispatch({ type: 'SET_LOADING', payload: false });
+      dispatch({ type: 'SET_LOADING', payload: { key: 'permissions', value: false } });
     }
   };
 
   const fetchRoles = async () => {
     try {
+      dispatch({ type: 'SET_LOADING', payload: { key: 'roles', value: true } });
       const roles = await api.getRoles();
       dispatch({ type: 'SET_ROLES', payload: roles });
     } catch (error) {
       showSnackbar(error.message, 'error');
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: { key: 'roles', value: false } });
     }
   };
 
   const handlePermissionUpdate = async (roleId, permission, isGranted) => {
     try {
-      dispatch({ type: 'SET_LOADING', payload: true });
+      dispatch({ type: 'SET_LOADING', payload: { key: 'operations', value: true } });
       const role = state.roles.find(r => r.id === roleId);
       if (!role) throw new Error('Role not found');
 
       const updatedPermissions = isGranted
-        ? [...role.permissions, permission]
+        ? [...new Set([...role.permissions, permission])] // Ensure unique permissions
         : role.permissions.filter(p => p !== permission);
       
       const updatedRole = { ...role, permissions: updatedPermissions };
@@ -52,11 +60,11 @@ export default function PermissionManagement() {
       showSnackbar('Permissions updated successfully');
       
       // Refresh roles to ensure consistency
-      fetchRoles();
+      await fetchRoles();
     } catch (error) {
       showSnackbar(error.message, 'error');
     } finally {
-      dispatch({ type: 'SET_LOADING', payload: false });
+      dispatch({ type: 'SET_LOADING', payload: { key: 'operations', value: false } });
     }
   };
 
@@ -67,6 +75,10 @@ export default function PermissionManagement() {
   const handleCloseSnackbar = () => {
     setSnackbar({ ...snackbar, open: false });
   };
+
+  const isLoading = state.loadingStates.permissions || 
+                    state.loadingStates.roles || 
+                    state.loadingStates.operations;
 
   return (
     <Box>
@@ -85,7 +97,10 @@ export default function PermissionManagement() {
           <Typography variant="h6" sx={{ mb: 2 }}>
             Permission List
           </Typography>
-          <PermissionList permissions={state.permissions} loading={state.loading} />
+          <PermissionList 
+            permissions={state.permissions} 
+            loading={state.loadingStates.permissions} 
+          />
         </Paper>
 
         <Paper sx={{ flex: 2, p: 2 }}>
@@ -96,7 +111,7 @@ export default function PermissionManagement() {
             roles={state.roles}
             permissions={state.permissions}
             onPermissionChange={handlePermissionUpdate}
-            loading={state.loading}
+            loading={isLoading}
           />
         </Paper>
       </Box>

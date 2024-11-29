@@ -6,16 +6,29 @@ const initialState = {
   users: [],
   roles: [],
   permissions: [],
-  loading: false,
+  loadingStates: {
+    users: false,
+    roles: false,
+    permissions: false,
+    operations: false,
+  },
   error: null
 };
 
 function rbacReducer(state, action) {
   switch (action.type) {
     case 'SET_LOADING':
-      return { ...state, loading: action.payload };
+      return {
+        ...state,
+        loadingStates: {
+          ...state.loadingStates,
+          [action.payload.key]: action.payload.value
+        }
+      };
     case 'SET_ERROR':
       return { ...state, error: action.payload };
+    case 'CLEAR_ERROR':
+      return { ...state, error: null };
     case 'SET_USERS':
       return { ...state, users: action.payload };
     case 'SET_ROLES':

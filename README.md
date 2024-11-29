@@ -1,70 +1,158 @@
-# Getting Started with Create React App
+# RBAC Admin Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A Role-Based Access Control (RBAC) Admin Dashboard built with React and Material-UI. This application provides a user-friendly interface for managing users, roles, and permissions in a system.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+### User Management
+- View users in a tabular format
+- Add, edit, and delete users
+- Filter users by status and role
+- Search users by name or email
 
-### `npm start`
+### Role Management
+- Create and manage roles
+- Assign permissions to roles
+- View role details and associated permissions
+- Delete roles when no longer needed
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Permission Management
+- View all system permissions
+- Interactive permission matrix
+- Assign/revoke permissions for roles
+- Real-time permission updates
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Dashboard
+- Overview of system statistics
+- User count and status summary
+- Role distribution
+- Permission usage metrics
 
-### `npm test`
+## Technical Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- React 18
+- Material-UI v5
+- React Router v6
+- Context API for state management
+- Axios for API calls (mock implementation)
 
-### `npm run build`
+## Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Clone the repository:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+git clone <repository-link>
+cd rbac-ui
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Install dependencies:
+```
+npm install
+```
 
-### `npm run eject`
+Start the development server:
+```
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Open the application in your browser at http://localhost:3000.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Project Structure
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```
+src/
+├── components/
+│   ├── Common/
+│   │   └── Layout.js               # Main layout with navigation
+│   │
+│   ├── Dashboard/
+│   │   └── Dashboard.js            # Overview dashboard component
+│   │
+│   ├── UserManagement/
+│   │   ├── UserManagement.js       # User management container
+│   │   ├── UserTable.js           # Users list table
+│   │   ├── UserFormModal.js       # Add/Edit user modal
+│   │   └── UserFilters.js         # Search and filter controls
+│   │
+│   ├── RoleManagement/
+│   │   ├── RoleManagement.js      # Role management container
+│   │   ├── RoleList.js           # Roles list view
+│   │   └── RoleFormModal.js       # Add/Edit role modal
+│   │
+│   └── PermissionManagement/
+│       ├── PermissionManagement.js # Permission management container
+│       ├── PermissionList.js      # Permissions list view
+│       └── PermissionMatrix.js    # Role-permission matrix
+│
+├── context/
+│   └── RBACContext.js             # Global state management
+│
+├── services/
+│   └── api.js                     # API service layer (mock)
+│
+├── styles/
+│   └── theme.js                   # MUI theme configuration
+│
+├── App.js                         # Root component
+└── index.js                       # Application entry point
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Component Details
 
-## Learn More
+### Common Components
+- `Layout.js`: Provides the application shell with navigation and responsive drawer
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### User Management
+- `UserManagement.js`: Container component for user management features
+- `UserTable.js`: Displays users in a table format with actions
+- `UserFormModal.js`: Modal form for creating/editing users
+- `UserFilters.js`: Search and filter controls for users
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Role Management
+- `RoleManagement.js`: Container for role management features
+- `RoleList.js`: Displays roles with their permissions
+- `RoleFormModal.js`: Modal for creating/editing roles
 
-### Code Splitting
+### Permission Management
+- `PermissionManagement.js`: Container for permission management
+- `PermissionList.js`: Lists all system permissions
+- `PermissionMatrix.js`: Interactive matrix for role-permission assignment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### State Management
+- `RBACContext.js`: Context provider with reducer for global state
+  - Manages users, roles, and permissions
+  - Handles loading states
+  - Manages error states
 
-### Analyzing the Bundle Size
+### Services
+- `api.js`: Mock API service
+  - Simulates backend calls
+  - Manages mock data
+  - Implements CRUD operations
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Styling
+- `theme.js`: Material-UI theme customization
+  - Defines color palette
+  - Configures component defaults
+  - Sets up responsive breakpoints
 
-### Making a Progressive Web App
+## How It Works
+User Management:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Navigate to the User Management section to view and manage users.
+Use the Add User button to add a new user. Assign a role and status while creating.
+Edit user details or delete users as required.
+Role Management:
 
-### Advanced Configuration
+Access the Role Management section to view and manage roles.
+Use the Add Role button to create a new role and assign permissions.
+Modify existing roles using the Edit option.
+Permission Matrix:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Open the Permission Matrix to assign or revoke permissions dynamically.
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Future Enhancements
+Integrate with a real backend API for persistence.
+Add advanced features like role hierarchies or granular permission levels.
+Implement dark mode for better UX.
+This RBAC dashboard demonstrates best practices in frontend development while providing a robust foundation for managing roles and permissions.
