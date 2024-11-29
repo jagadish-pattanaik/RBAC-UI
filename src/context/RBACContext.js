@@ -36,6 +36,20 @@ function rbacReducer(state, action) {
         ...state,
         users: state.users.filter(user => user.id !== action.payload)
       };
+    case 'ADD_ROLE':
+      return { ...state, roles: [...state.roles, action.payload] };
+    case 'UPDATE_ROLE':
+      return {
+        ...state,
+        roles: state.roles.map(role => 
+          role.id === action.payload.id ? action.payload : role
+        )
+      };
+    case 'DELETE_ROLE':
+      return {
+        ...state,
+        roles: state.roles.filter(role => role.id !== action.payload)
+      };
     default:
       return state;
   }
