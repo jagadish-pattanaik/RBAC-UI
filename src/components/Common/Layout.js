@@ -169,6 +169,31 @@ export default function Layout({ children, onToggleTheme, currentTheme }) {
           {currentTheme === 'light' ? 'Dark Mode' : 'Light Mode'}
         </Button>
       </Box>
+      <Box sx={{ 
+        p: 2, 
+        pt: 1,
+        opacity: 0.7,
+        fontSize: '0.75rem',
+        color: 'text.secondary',
+        textAlign: 'center',
+      }}>
+        Made with ❤️ by{' '}
+        <Box
+          component="a"
+          href="https://github.com/jagadish-pattanaik"
+          target="_blank"
+          rel="noopener noreferrer"
+          sx={{
+            color: 'inherit',
+            textDecoration: 'none',
+            '&:hover': {
+              textDecoration: 'underline',
+            },
+          }}
+        >
+          Jagadish Prasad Pattanaik
+        </Box>
+      </Box>
     </Box>
   );
 
