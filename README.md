@@ -1,4 +1,4 @@
-# RBAC Admin Dashboard
+# RBAC Dashboard
 
 A Role-Based Access Control (RBAC) Admin Dashboard built with React and Material-UI. This application provides a user-friendly interface for managing users, roles, and permissions in a system.
 

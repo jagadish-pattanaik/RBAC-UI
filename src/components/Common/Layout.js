@@ -80,7 +80,7 @@ export default function Layout({ children, onToggleTheme, currentTheme }) {
             <SecurityIcon />
           </Avatar>
           <Typography variant="h6" noWrap>
-            RBAC Admin
+            RBAC
           </Typography>
         </Box>
         <IconButton
@@ -175,6 +175,42 @@ export default function Layout({ children, onToggleTheme, currentTheme }) {
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
       <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '48px',
+          bgcolor: 'background.default',
+          borderBottom: 1,
+          borderColor: 'divider',
+          display: { sm: 'none' },
+          px: 2,
+          zIndex: 1,
+        }}
+      >
+        <Box
+          sx={{
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <IconButton
+            onClick={() => setMobileOpen(!mobileOpen)}
+            sx={{
+              color: 'text.primary',
+              '&:hover': {
+                backgroundColor: 'action.hover',
+              },
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Box>
+      </Box>
+
+      <Box
         component="nav"
         sx={{
           width: { sm: drawerWidth.sm },
@@ -227,47 +263,6 @@ export default function Layout({ children, onToggleTheme, currentTheme }) {
           pt: { xs: '56px', sm: 3 },
         }}
       >
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: '48px',
-            bgcolor: 'background.paper',
-            borderBottom: 1,
-            borderColor: 'divider',
-            display: { sm: 'none' },
-            px: 2,
-            zIndex: 1,
-          }}
-        >
-          <Box
-            sx={{
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Button
-              startIcon={<MenuIcon />}
-              onClick={() => setMobileOpen(!mobileOpen)}
-              sx={{
-                textTransform: 'none',
-                color: 'text.primary',
-                '&:hover': {
-                  backgroundColor: 'action.hover',
-                },
-              }}
-            >
-              Menu
-            </Button>
-            <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
-              {getCurrentPageTitle()}
-            </Typography>
-          </Box>
-        </Box>
         {children}
       </Box>
     </Box>

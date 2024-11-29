@@ -7,11 +7,15 @@ import Dashboard from './components/Dashboard/Dashboard';
 import UserManagement from './components/UserManagement/UserManagement';
 import RoleManagement from './components/RoleManagement/RoleManagement';
 import PermissionManagement from './components/PermissionManagement/PermissionManagement';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 function App() {
-  const [mode, setMode] = useState('light');
+  const [mode, setMode] = useState('dark');
   const theme = useMemo(() => getTheme(mode), [mode]);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty('color-scheme', 'dark');
+  }, []);
 
   const toggleTheme = () => {
     document.documentElement.style.setProperty('color-scheme', mode === 'light' ? 'dark' : 'light');
