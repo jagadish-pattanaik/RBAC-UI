@@ -19,9 +19,9 @@ export const getPermissionIcon = (permissionName) => {
       return WriteIcon;
     case 'delete':
       return DeleteIcon;
-    case 'manage_users':
+    case 'manage users':
       return ManageUsersIcon;
-    case 'manage_roles':
+    case 'manage roles':
       return ManageRolesIcon;
     default:
       return SecurityIcon;
