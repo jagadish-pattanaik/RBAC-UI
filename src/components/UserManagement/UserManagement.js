@@ -20,13 +20,13 @@ export default function UserManagement() {
 
   const fetchUsers = async () => {
     try {
-      dispatch({ type: 'SET_LOADING', payload: true });
+      dispatch({ type: 'SET_LOADING', payload: { key: 'users', value: true } });
       const users = await api.getUsers();
       dispatch({ type: 'SET_USERS', payload: users });
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: error.message });
     } finally {
-      dispatch({ type: 'SET_LOADING', payload: false });
+      dispatch({ type: 'SET_LOADING', payload: { key: 'users', value: false } });
     }
   };
 
@@ -79,16 +79,27 @@ export default function UserManagement() {
         </Button>
       </Box>
 
-      <Paper sx={{ mb: 3, p: 2 }}>
+      <Paper 
+        sx={{ 
+          mb: 2,
+          p: { xs: 2, sm: 2 },
+          borderRadius: 2,
+        }}
+      >
         <UserFilters filters={filters} setFilters={setFilters} roles={state.roles} />
       </Paper>
 
-      <Paper>
+      <Paper 
+        sx={{ 
+          borderRadius: 2,
+          overflow: 'hidden',
+        }}
+      >
         <UserTable
           users={filteredUsers}
           onEdit={handleEditUser}
           onDelete={handleDeleteUser}
-          loading={state.loading}
+          loading={state.loadingStates.users}
         />
       </Paper>
 

@@ -5,11 +5,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  IconButton,
-  CircularProgress,
   Box,
   useTheme,
-  Skeleton,
 } from '@mui/material';
 import {
   Edit as EditIcon,
@@ -82,17 +79,17 @@ const RoleChip = ({ role }) => {
   );
 };
 
-export default function UserTable({ users, onEdit, onDelete, loading }) {
+export default function UserTable({ users = [], onEdit, onDelete, loading }) {
   if (loading) {
     return (
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Role</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell align="left">Name</TableCell>
+              <TableCell align="left">Email</TableCell>
+              <TableCell align="left">Role</TableCell>
+              <TableCell align="left">Status</TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -113,14 +110,19 @@ export default function UserTable({ users, onEdit, onDelete, loading }) {
   }
 
   return (
-    <TableContainer>
+    <TableContainer sx={{ 
+      overflowX: 'auto',
+      '& .MuiTable-root': {
+        minWidth: 650,
+      }
+    }}>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Role</TableCell>
-            <TableCell>Status</TableCell>
+            <TableCell align="left">Name</TableCell>
+            <TableCell align="left">Email</TableCell>
+            <TableCell align="left">Role</TableCell>
+            <TableCell align="left">Status</TableCell>
             <TableCell align="right">Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -136,13 +138,13 @@ export default function UserTable({ users, onEdit, onDelete, loading }) {
                 },
               }}
             >
-              <TableCell>{user.name}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>
-                <RoleChip role={user.role} />
+              <TableCell align="left">{user.name || ''}</TableCell>
+              <TableCell align="left">{user.email || ''}</TableCell>
+              <TableCell align="left">
+                <RoleChip role={user.role || ''} />
               </TableCell>
-              <TableCell>
-                <StatusChip status={user.status} />
+              <TableCell align="left">
+                <StatusChip status={user.status || ''} />
               </TableCell>
               <TableCell align="right">
                 <ActionButton

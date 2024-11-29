@@ -2,7 +2,14 @@ import { Box, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/
 
 export default function UserFilters({ filters, setFilters, roles }) {
   return (
-    <Box sx={{ display: 'flex', gap: 2 }}>
+    <Box sx={{ 
+      display: 'flex', 
+      gap: 2,
+      flexDirection: { xs: 'column', sm: 'row' },
+      '& .MuiFormControl-root': {
+        minWidth: { xs: '100%', sm: 120 }
+      }
+    }}>
       <TextField
         label="Search"
         value={filters.search}

@@ -54,6 +54,24 @@ export const getTheme = (mode) => {
           '*, *::before, *::after': {
             transition: 'none', // Disable global transitions
           },
+          '*': {
+            scrollbarWidth: 'thin',
+            scrollbarColor: `${mode === 'dark' ? '#1e293b #0f172a' : '#e2e8f0 #f8fafc'}`,
+          },
+          '*::-webkit-scrollbar': {
+            width: '8px',
+            height: '8px',
+          },
+          '*::-webkit-scrollbar-track': {
+            background: mode === 'dark' ? '#0f172a' : '#f8fafc',
+          },
+          '*::-webkit-scrollbar-thumb': {
+            backgroundColor: mode === 'dark' ? '#1e293b' : '#e2e8f0',
+            borderRadius: '20px',
+          },
+          '*::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: mode === 'dark' ? '#2d3748' : '#cbd5e1',
+          },
         },
       },
       MuiPaper: {

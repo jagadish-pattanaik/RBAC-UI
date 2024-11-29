@@ -15,6 +15,7 @@ import {
   Avatar,
   Divider,
   Tooltip,
+  Button,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -25,9 +26,13 @@ import {
   Brightness4 as DarkModeIcon,
   Brightness7 as LightModeIcon,
   Security as SecurityIcon,
+  Close as CloseIcon,
 } from '@mui/icons-material';
 
-const drawerWidth = 240;
+const drawerWidth = {
+  xs: '280px',
+  sm: 240,
+};
 
 export default function Layout({ children, onToggleTheme, currentTheme }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -46,23 +51,70 @@ export default function Layout({ children, onToggleTheme, currentTheme }) {
     return location.pathname === path;
   };
 
+  const handleNavigation = (path) => {
+    navigate(path);
+    setMobileOpen(false);
+  };
+
+  const getCurrentPageTitle = () => {
+    const currentItem = menuItems.find(item => item.path === location.pathname);
+    return currentItem ? currentItem.text : 'Dashboard';
+  };
+
   const drawer = (
-    <Box>
-      <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Avatar sx={{ bgcolor: theme.palette.primary.main }}>
-          <SecurityIcon />
-        </Avatar>
-        <Typography variant="h6" noWrap>
-          RBAC Admin
-        </Typography>
+    <Box sx={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      height: '100%',
+      overflow: 'hidden',
+    }}>
+      <Box sx={{ 
+        p: 2, 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'space-between',
+        flexShrink: 0,
+      }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Avatar sx={{ bgcolor: theme.palette.primary.main }}>
+            <SecurityIcon />
+          </Avatar>
+          <Typography variant="h6" noWrap>
+            RBAC Admin
+          </Typography>
+        </Box>
+        <IconButton
+          onClick={() => setMobileOpen(false)}
+          sx={{ 
+            display: { sm: 'none' },
+            color: 'text.secondary',
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
       </Box>
       <Divider />
-      <List>
+      <List 
+        sx={{ 
+          flex: 1,
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          '&::-webkit-scrollbar': {
+            width: '4px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: theme => theme.palette.mode === 'dark' 
+              ? 'rgba(255,255,255,0.2)' 
+              : 'rgba(0,0,0,0.2)',
+            borderRadius: '4px',
+          },
+        }}
+      >
         {menuItems.map((item) => (
           <ListItem
             button
             key={item.text}
-            onClick={() => navigate(item.path)}
+            onClick={() => handleNavigation(item.path)}
             selected={isCurrentPath(item.path)}
             sx={{
               mx: 1,
@@ -81,6 +133,7 @@ export default function Layout({ children, onToggleTheme, currentTheme }) {
                 color: isCurrentPath(item.path)
                   ? theme.palette.primary.main
                   : 'inherit',
+                minWidth: 40,
               }}
             >
               {item.icon}
@@ -96,42 +149,37 @@ export default function Layout({ children, onToggleTheme, currentTheme }) {
           </ListItem>
         ))}
       </List>
+      <Divider sx={{ mt: 'auto' }} />
+      <Box sx={{ p: 2, flexShrink: 0 }}>
+        <Button
+          fullWidth
+          variant="outlined"
+          onClick={onToggleTheme}
+          startIcon={currentTheme === 'light' ? <DarkModeIcon /> : <LightModeIcon />}
+          sx={{
+            justifyContent: 'flex-start',
+            color: 'text.secondary',
+            borderColor: 'divider',
+            '&:hover': {
+              borderColor: 'primary.main',
+              backgroundColor: 'action.hover',
+            },
+          }}
+        >
+          {currentTheme === 'light' ? 'Dark Mode' : 'Light Mode'}
+        </Button>
+      </Box>
     </Box>
   );
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-      <AppBar
-        position="fixed"
-        sx={{
-          zIndex: (theme) => theme.zIndex.drawer + 1,
-          backgroundColor: theme.palette.background.paper,
-          color: theme.palette.text.primary,
-          boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            edge="start"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            RBAC
-          </Typography>
-          <Tooltip title={`Switch to ${currentTheme === 'light' ? 'dark' : 'light'} mode`}>
-            <IconButton color="inherit" onClick={onToggleTheme}>
-              {currentTheme === 'light' ? <DarkModeIcon /> : <LightModeIcon />}
-            </IconButton>
-          </Tooltip>
-        </Toolbar>
-      </AppBar>
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        sx={{
+          width: { sm: drawerWidth.sm },
+          flexShrink: { sm: 0 },
+        }}
       >
         <Drawer
           variant="temporary"
@@ -142,7 +190,9 @@ export default function Layout({ children, onToggleTheme, currentTheme }) {
             display: { xs: 'block', sm: 'none' },
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
-              width: drawerWidth,
+              width: drawerWidth.xs,
+              border: 'none',
+              overflow: 'hidden',
             },
           }}
         >
@@ -154,8 +204,9 @@ export default function Layout({ children, onToggleTheme, currentTheme }) {
             display: { xs: 'none', sm: 'block' },
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
-              width: drawerWidth,
-              borderRight: '1px solid rgba(0,0,0,0.08)',
+              width: drawerWidth.sm,
+              border: 'none',
+              overflow: 'hidden',
             },
           }}
           open
@@ -163,17 +214,60 @@ export default function Layout({ children, onToggleTheme, currentTheme }) {
           {drawer}
         </Drawer>
       </Box>
+
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          mt: 8,
+          p: { xs: 2, sm: 3 },
+          width: { sm: `calc(100% - ${drawerWidth.sm}px)` },
+          height: '100vh',
+          overflow: 'auto',
           backgroundColor: 'background.default',
-          minHeight: '100vh',
+          pt: { xs: '56px', sm: 3 },
         }}
       >
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '48px',
+            bgcolor: 'background.paper',
+            borderBottom: 1,
+            borderColor: 'divider',
+            display: { sm: 'none' },
+            px: 2,
+            zIndex: 1,
+          }}
+        >
+          <Box
+            sx={{
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Button
+              startIcon={<MenuIcon />}
+              onClick={() => setMobileOpen(!mobileOpen)}
+              sx={{
+                textTransform: 'none',
+                color: 'text.primary',
+                '&:hover': {
+                  backgroundColor: 'action.hover',
+                },
+              }}
+            >
+              Menu
+            </Button>
+            <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
+              {getCurrentPageTitle()}
+            </Typography>
+          </Box>
+        </Box>
         {children}
       </Box>
     </Box>

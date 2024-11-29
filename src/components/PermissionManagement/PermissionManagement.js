@@ -92,9 +92,19 @@ export default function PermissionManagement() {
         </Alert>
       )}
 
-      <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
-        <Paper sx={{ flex: 1, p: 2 }}>
-          <Typography variant="h6" sx={{ mb: 2 }}>
+      <Box sx={{ 
+        display: 'flex', 
+        gap: { xs: 2, md: 3 }, 
+        flexDirection: { xs: 'column', md: 'row' } 
+      }}>
+        <Paper sx={{ 
+          flex: { md: 1 }, 
+          p: { xs: 2, sm: 2 },
+          overflow: 'auto',
+          maxHeight: { xs: '300px', md: 'none' },
+          borderRadius: 2,
+        }}>
+          <Typography variant="h6" sx={{ mb: 2, px: 1 }}>
             Permission List
           </Typography>
           <PermissionList 
@@ -103,16 +113,23 @@ export default function PermissionManagement() {
           />
         </Paper>
 
-        <Paper sx={{ flex: 2, p: 2 }}>
-          <Typography variant="h6" sx={{ mb: 2 }}>
+        <Paper sx={{ 
+          flex: { md: 2 }, 
+          p: { xs: 2, sm: 2 },
+          overflow: 'hidden',
+          borderRadius: 2,
+        }}>
+          <Typography variant="h6" sx={{ mb: 2, px: 1 }}>
             Role Permissions Matrix
           </Typography>
-          <PermissionMatrix
-            roles={state.roles}
-            permissions={state.permissions}
-            onPermissionChange={handlePermissionUpdate}
-            loading={isLoading}
-          />
+          <Box sx={{ overflowX: 'auto' }}>
+            <PermissionMatrix
+              roles={state.roles}
+              permissions={state.permissions}
+              onPermissionChange={handlePermissionUpdate}
+              loading={isLoading}
+            />
+          </Box>
         </Paper>
       </Box>
 

@@ -25,10 +25,10 @@ import { api } from '../../services/api';
 import { getPermissionIcon } from '../../utils/iconMapping';
 import Shimmer from '../Common/Shimmer';
 
-const StatCard = ({ title, value, icon, color }) => {
+const StatCard = ({ title, value, icon, color, sx }) => {
   const theme = useTheme();
   return (
-    <Card sx={{ height: '100%' }}>
+    <Card sx={{ height: '100%', ...sx }}>
       <CardContent>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
           <Box
@@ -220,48 +220,96 @@ export default function Dashboard() {
         Dashboard Overview
       </Typography>
 
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3}>
+      <Grid container spacing={2} sx={{ mb: { xs: 2, md: 4 } }}>
+        <Grid item xs={6} sm={6} md={3}>
           <StatCard
             title="Total Users"
             value={state.users.length}
             icon={<PeopleIcon sx={{ color: theme.palette.primary.main }} />}
             color={theme.palette.primary.main}
+            sx={{ 
+              height: { xs: '140px', sm: 'auto' },
+              '& .MuiCardContent-root': {
+                p: { xs: 1.5, sm: 2 },
+              },
+              '& .MuiTypography-h6': {
+                fontSize: { xs: '0.875rem', sm: '1rem' },
+              },
+              '& .MuiTypography-h4': {
+                fontSize: { xs: '1.5rem', sm: '2rem' },
+              },
+            }}
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={6} sm={6} md={3}>
           <StatCard
             title="Active Users"
             value={activeUsers}
             icon={<ActiveIcon sx={{ color: theme.palette.success.main }} />}
             color={theme.palette.success.main}
+            sx={{ 
+              height: { xs: '140px', sm: 'auto' },
+              '& .MuiCardContent-root': {
+                p: { xs: 1.5, sm: 2 },
+              },
+              '& .MuiTypography-h6': {
+                fontSize: { xs: '0.875rem', sm: '1rem' },
+              },
+              '& .MuiTypography-h4': {
+                fontSize: { xs: '1.5rem', sm: '2rem' },
+              },
+            }}
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={6} sm={6} md={3}>
           <StatCard
             title="Roles"
             value={state.roles.length}
             icon={<RolesIcon sx={{ color: theme.palette.secondary.main }} />}
             color={theme.palette.secondary.main}
+            sx={{ 
+              height: { xs: '140px', sm: 'auto' },
+              '& .MuiCardContent-root': {
+                p: { xs: 1.5, sm: 2 },
+              },
+              '& .MuiTypography-h6': {
+                fontSize: { xs: '0.875rem', sm: '1rem' },
+              },
+              '& .MuiTypography-h4': {
+                fontSize: { xs: '1.5rem', sm: '2rem' },
+              },
+            }}
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={6} sm={6} md={3}>
           <StatCard
             title="Permissions"
             value={state.permissions.length}
             icon={<PermissionsIcon sx={{ color: theme.palette.warning.main }} />}
             color={theme.palette.warning.main}
+            sx={{ 
+              height: { xs: '140px', sm: 'auto' },
+              '& .MuiCardContent-root': {
+                p: { xs: 1.5, sm: 2 },
+              },
+              '& .MuiTypography-h6': {
+                fontSize: { xs: '0.875rem', sm: '1rem' },
+              },
+              '& .MuiTypography-h4': {
+                fontSize: { xs: '1.5rem', sm: '2rem' },
+              },
+            }}
           />
         </Grid>
       </Grid>
 
-      <Grid container spacing={3}>
+      <Grid container spacing={{ xs: 2, md: 3 }}>
         <Grid item xs={12} md={6}>
           <Paper 
             sx={{ 
-              p: 2, 
+              p: { xs: 1.5, sm: 2 }, 
               height: '100%',
-              boxShadow: (theme) => theme.palette.mode === 'dark' 
+              boxShadow: theme => theme.palette.mode === 'dark' 
                 ? '0 2px 8px rgba(0,0,0,0.3)' 
                 : '0 2px 8px rgba(0,0,0,0.1)',
             }}
@@ -306,9 +354,9 @@ export default function Dashboard() {
         <Grid item xs={12} md={6}>
           <Paper 
             sx={{ 
-              p: 2, 
+              p: { xs: 1.5, sm: 2 }, 
               height: '100%',
-              boxShadow: (theme) => theme.palette.mode === 'dark' 
+              boxShadow: theme => theme.palette.mode === 'dark' 
                 ? '0 2px 8px rgba(0,0,0,0.3)' 
                 : '0 2px 8px rgba(0,0,0,0.1)',
             }}
